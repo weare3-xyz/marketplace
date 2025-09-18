@@ -132,13 +132,23 @@ npm run dev
 
 Visit `http://localhost:3000` to see the application.
 
-## 🌐 Current Deployment Status
+## 🌐 Live Demo & Deployment Status
+
+### 🚀 Live Application
+**Try it now: [https://app-topaz-three.vercel.app](https://app-topaz-three.vercel.app)**
+
+Anyone can now access and test the NFT marketplace! Simply:
+1. Visit the live demo
+2. Connect your Solana wallet (set to testnet mode)
+3. Select your role and create an on-chain profile
+4. Test the role-based functionality
 
 ### Devnet Deployment ✅
 - **Program ID**: `9AvbivndosEuSExjRmdJQz1NswXCvbDzeHVBg4Ls4cDw`
 - **Network**: Solana Devnet
 - **Status**: Active and functional
 - **Marketplace**: Initialized and ready
+- **Frontend**: Deployed on Vercel
 
 ### Testing the Live Application
 1. **Set up your wallet for devnet**:
