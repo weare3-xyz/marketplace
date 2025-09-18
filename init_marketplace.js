@@ -1,12 +1,9 @@
-// Migrations are an early feature. Currently, they're nothing more than this
-// single deploy script that's invoked from the CLI, injecting a provider
-// configured from the workspace's Anchor.toml.
+const anchor = require("@coral-xyz/anchor");
+const { PublicKey, SystemProgram } = require("@solana/web3.js");
 
-import * as anchor from "@coral-xyz/anchor";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
-
-module.exports = async function (provider: anchor.AnchorProvider) {
-  // Configure client to use the provider.
+async function initializeMarketplace() {
+  // Configure the client to use the local cluster
+  const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
   const program = anchor.workspace.NftMarketplace;
@@ -35,7 +32,9 @@ module.exports = async function (provider: anchor.AnchorProvider) {
         authority: provider.wallet.publicKey,
         systemProgram: SystemProgram.programId,
       })
-      .rpc();
+      .rpc({
+        commitment: 'confirmed'
+      });
 
     console.log("✅ Marketplace initialized successfully!");
     console.log("📝 Transaction signature:", tx);
@@ -51,4 +50,6 @@ module.exports = async function (provider: anchor.AnchorProvider) {
     console.error("❌ Error initializing marketplace:", error);
     throw error;
   }
-};
+}
+
+initializeMarketplace().catch(console.error);

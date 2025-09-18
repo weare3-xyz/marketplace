@@ -1,0 +1,552 @@
+{
+  "address": "9AvbivndosEuSExjRmdJQz1NswXCvbDzeHVBg4Ls4cDw",
+  "metadata": {
+    "name": "nft_marketplace",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "create_user_profile",
+      "discriminator": [
+        9,
+        214,
+        142,
+        184,
+        153,
+        65,
+        50,
+        174
+      ],
+      "accounts": [
+        {
+          "name": "user_profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_stats",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  115
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_profile"
+              }
+            ]
+          }
+        },
+        {
+          "name": "marketplace_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116,
+                  112,
+                  108,
+                  97,
+                  99,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "type": {
+            "defined": {
+              "name": "UserProfileInput"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "marketplace_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116,
+                  112,
+                  108,
+                  97,
+                  99,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "update_user_profile",
+      "discriminator": [
+        79,
+        75,
+        114,
+        130,
+        68,
+        123,
+        180,
+        11
+      ],
+      "accounts": [
+        {
+          "name": "user_profile",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  112,
+                  114,
+                  111,
+                  102,
+                  105,
+                  108,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "signer": true,
+          "relations": [
+            "user_profile"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "input",
+          "type": {
+            "defined": {
+              "name": "UserProfileInput"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "MarketplaceConfig",
+      "discriminator": [
+        169,
+        22,
+        247,
+        131,
+        182,
+        200,
+        81,
+        124
+      ]
+    },
+    {
+      "name": "UserProfile",
+      "discriminator": [
+        32,
+        37,
+        119,
+        205,
+        179,
+        180,
+        13,
+        194
+      ]
+    },
+    {
+      "name": "UserStats",
+      "discriminator": [
+        176,
+        223,
+        136,
+        27,
+        122,
+        79,
+        32,
+        227
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UnauthorizedAccess",
+      "msg": "Unauthorized access"
+    },
+    {
+      "code": 6001,
+      "name": "UsernameTooLong",
+      "msg": "Username too long"
+    },
+    {
+      "code": 6002,
+      "name": "BioTooLong",
+      "msg": "Bio too long"
+    },
+    {
+      "code": 6003,
+      "name": "AvatarUriTooLong",
+      "msg": "Avatar URI too long"
+    },
+    {
+      "code": 6004,
+      "name": "WebsiteTooLong",
+      "msg": "Website URL too long"
+    },
+    {
+      "code": 6005,
+      "name": "TwitterTooLong",
+      "msg": "Twitter handle too long"
+    },
+    {
+      "code": 6006,
+      "name": "InvalidRole",
+      "msg": "Invalid role for this action"
+    },
+    {
+      "code": 6007,
+      "name": "MarketplacePaused",
+      "msg": "Marketplace is paused"
+    },
+    {
+      "code": 6008,
+      "name": "UserProfileNotFound",
+      "msg": "User profile not found"
+    },
+    {
+      "code": 6009,
+      "name": "UserProfileAlreadyExists",
+      "msg": "User profile already exists"
+    },
+    {
+      "code": 6010,
+      "name": "InvalidInput",
+      "msg": "Invalid input"
+    },
+    {
+      "code": 6011,
+      "name": "InsufficientPermissions",
+      "msg": "Insufficient permissions"
+    }
+  ],
+  "types": [
+    {
+      "name": "MarketplaceConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "fee_recipient",
+            "type": "pubkey"
+          },
+          {
+            "name": "marketplace_fee_bp",
+            "type": "u16"
+          },
+          {
+            "name": "max_royalty_bp",
+            "type": "u16"
+          },
+          {
+            "name": "is_paused",
+            "type": "bool"
+          },
+          {
+            "name": "total_users",
+            "type": "u64"
+          },
+          {
+            "name": "total_nfts",
+            "type": "u64"
+          },
+          {
+            "name": "total_volume",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserProfile",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "role",
+            "type": {
+              "defined": {
+                "name": "UserRole"
+              }
+            }
+          },
+          {
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "name": "bio",
+            "type": "string"
+          },
+          {
+            "name": "avatar_uri",
+            "type": "string"
+          },
+          {
+            "name": "website",
+            "type": "string"
+          },
+          {
+            "name": "twitter",
+            "type": "string"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "is_verified",
+            "type": "bool"
+          },
+          {
+            "name": "nft_count",
+            "type": "u32"
+          },
+          {
+            "name": "collection_count",
+            "type": "u32"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserProfileInput",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "role",
+            "type": {
+              "defined": {
+                "name": "UserRole"
+              }
+            }
+          },
+          {
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "name": "bio",
+            "type": "string"
+          },
+          {
+            "name": "avatar_uri",
+            "type": "string"
+          },
+          {
+            "name": "website",
+            "type": "string"
+          },
+          {
+            "name": "twitter",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserRole",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Artist"
+          },
+          {
+            "name": "Collector"
+          },
+          {
+            "name": "Curator"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user_profile",
+            "type": "pubkey"
+          },
+          {
+            "name": "nfts_created",
+            "type": "u32"
+          },
+          {
+            "name": "nfts_sold",
+            "type": "u32"
+          },
+          {
+            "name": "nfts_purchased",
+            "type": "u32"
+          },
+          {
+            "name": "total_earned",
+            "type": "u64"
+          },
+          {
+            "name": "total_spent",
+            "type": "u64"
+          },
+          {
+            "name": "collections_curated",
+            "type": "u32"
+          },
+          {
+            "name": "last_activity",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "SEED",
+      "type": "string",
+      "value": "\"anchor\""
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, ReactNode, useMemo } from 'react'
+import { FC, ReactNode, useMemo, useEffect, useState } from 'react'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
@@ -14,6 +14,12 @@ interface Props {
 }
 
 export const WalletContextProvider: FC<Props> = ({ children }) => {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const network = WalletAdapterNetwork.Devnet
   const endpoint = useMemo(() => clusterApiUrl(network), [network])
 
@@ -24,6 +30,10 @@ export const WalletContextProvider: FC<Props> = ({ children }) => {
     ],
     [network]
   )
+
+  if (!mounted) {
+    return <div>{children}</div>
+  }
 
   return (
     <ConnectionProvider endpoint={endpoint}>

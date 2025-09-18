@@ -18,4 +18,18 @@ pub mod nft_marketplace {
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         initialize::handler(ctx)
     }
+
+    pub fn create_user_profile(
+        ctx: Context<CreateUserProfile>,
+        input: state::UserProfileInput,
+    ) -> Result<()> {
+        instructions::user::create_user_profile(ctx, input)
+    }
+
+    pub fn update_user_profile(
+        ctx: Context<UpdateUserProfile>,
+        input: state::UserProfileInput,
+    ) -> Result<()> {
+        instructions::user::update_user_profile(ctx, input)
+    }
 }

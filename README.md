@@ -4,10 +4,13 @@ A decentralized NFT marketplace built on Solana blockchain using Anchor framewor
 
 ## 🚀 Features
 
-- **Wallet Integration**: Multi-wallet support (Phantom, Solflare)
+- **Wallet Integration**: Multi-wallet support (Phantom, Solflare) with seamless connection
+- **Role-Based Access**: Three distinct user roles (Artist, Collector, Curator) with different permissions
+- **Smart Contract User Profiles**: On-chain user profile system with role-based functionality
+- **Deployed on Devnet**: Fully functional smart contracts deployed and tested on Solana devnet
 - **Decentralized Trading**: Built on Solana for fast, low-cost transactions
-- **Modern UI**: Responsive design with Tailwind CSS
-- **Smart Contracts**: Written in Rust using Anchor framework
+- **Modern UI**: Responsive design with Tailwind CSS and SSR/hydration support
+- **Smart Contracts**: Written in Rust using Anchor framework with comprehensive state management
 - **TypeScript**: Full type safety across the stack
 
 ## 🛠️ Tech Stack
@@ -129,6 +132,38 @@ npm run dev
 
 Visit `http://localhost:3000` to see the application.
 
+## 🌐 Current Deployment Status
+
+### Devnet Deployment ✅
+- **Program ID**: `9AvbivndosEuSExjRmdJQz1NswXCvbDzeHVBg4Ls4cDw`
+- **Network**: Solana Devnet
+- **Status**: Active and functional
+- **Marketplace**: Initialized and ready
+
+### Testing the Live Application
+1. **Set up your wallet for devnet**:
+   ```bash
+   # In your Solana wallet (Phantom/Solflare), switch to "Testnet" mode
+   ```
+
+2. **Get devnet SOL**:
+   ```bash
+   solana airdrop 2 --url devnet
+   # Or use: https://faucet.solana.com/
+   ```
+
+3. **Test user profile creation**:
+   - Connect your wallet at `http://localhost:3000`
+   - Select a role (Artist, Collector, or Curator)
+   - Fill in username and bio
+   - Sign the transaction to create your on-chain profile
+
+4. **Verify your profile**:
+   ```bash
+   # Run the verification script
+   node check_user_profile.js
+   ```
+
 ## 🧪 Testing
 
 ### Smart Contract Tests
@@ -189,19 +224,36 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 
 ### Smart Contract Instructions
 
-- `initialize()`: Initialize the marketplace
+#### User Management (Implemented ✅)
+- `initialize_marketplace()`: Initialize the marketplace configuration
+- `create_user_profile()`: Create a new user profile with role selection
+- `update_user_profile()`: Update existing user profile information
+
+#### NFT Trading (Coming Next)
 - `list_nft()`: List an NFT for sale
 - `buy_nft()`: Purchase a listed NFT
 - `cancel_listing()`: Cancel an active listing
 - `make_offer()`: Make an offer on an NFT
 - `accept_offer()`: Accept an offer
 
+#### Account Types
+- **UserProfile**: Stores user role, username, bio, and social links
+- **UserStats**: Tracks user's NFT activity and reputation
+- **MarketplaceConfig**: Global marketplace settings and configuration
+
 ### Frontend Components
 
-- `WalletProvider`: Wallet connection management
+#### Implemented ✅
+- `WalletProvider`: Wallet connection management with SSR support
+- `UserContext`: User state management and role persistence
+- `SmartContractRoleSelection`: Role selection UI with blockchain integration
+- `WalletButton`: Dynamic wallet connection component
+
+#### Coming Next
 - `NFTCard`: Display NFT information
 - `ListingForm`: Create new NFT listings
 - `MarketplaceGrid`: Display marketplace items
+- `UserProfile`: User profile display and management
 
 ## 🤝 Contributing
 
@@ -219,11 +271,16 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - [x] Basic UI components
 - [x] Smart contract structure
 
-### Phase 2: Core Features (In Progress)
-- [ ] NFT listing functionality
-- [ ] Purchase mechanism
-- [ ] Marketplace browsing
-- [ ] User profiles
+### Phase 2: Core Features ✅
+- [x] Smart contract architecture with user management
+- [x] Role-based access system (Artist, Collector, Curator)
+- [x] User profile creation and management on-chain
+- [x] Deployed smart contracts on Solana devnet
+- [x] Frontend integration with smart contracts
+- [x] Transaction handling and wallet interaction
+- [ ] NFT listing functionality (Next)
+- [ ] Purchase mechanism (Next)
+- [ ] Marketplace browsing (Next)
 
 ### Phase 3: Advanced Features
 - [ ] Auction system
