@@ -4,14 +4,22 @@ A decentralized NFT marketplace built on Solana blockchain using Anchor framewor
 
 ## 🚀 Features
 
+### ✅ **Implemented & Live**
 - **Wallet Integration**: Multi-wallet support (Phantom, Solflare) with seamless connection
 - **Role-Based Access**: Three distinct user roles (Artist, Collector, Curator) with different permissions
-- **Smart Contract User Profiles**: On-chain user profile system with role-based functionality
+- **Complete Profile Management**: Full on-chain profile system with editing capabilities
+- **Profile Dashboard**: Dedicated profile page with real-time blockchain data
+- **Profile Dropdown**: Quick access profile viewer with completeness tracking
+- **Smart Contract User Profiles**: Comprehensive on-chain user profile system
 - **Deployed on Devnet**: Fully functional smart contracts deployed and tested on Solana devnet
-- **Decentralized Trading**: Built on Solana for fast, low-cost transactions
 - **Modern UI**: Responsive design with Tailwind CSS and SSR/hydration support
 - **Smart Contracts**: Written in Rust using Anchor framework with comprehensive state management
 - **TypeScript**: Full type safety across the stack
+
+### 🚧 **Coming Next**
+- **NFT Trading**: Listing, purchasing, and marketplace browsing
+- **Collection Management**: NFT collections and curation tools
+- **Advanced Features**: Auctions, offers, and royalty distribution
 
 ## 🛠️ Tech Stack
 
@@ -39,18 +47,31 @@ nft-marketplace/
 │   └── nft-marketplace/          # Anchor smart contracts
 │       ├── src/
 │       │   ├── lib.rs           # Main program entry
-│       │   ├── instructions/    # Contract instructions
-│       │   ├── state/          # Data structures
+│       │   ├── instructions/    # Contract instructions (user management)
+│       │   ├── state/          # Data structures (UserProfile, UserStats, MarketplaceConfig)
 │       │   └── error.rs        # Custom errors
 │       └── Cargo.toml
 ├── app/                         # Next.js frontend
 │   ├── src/
 │   │   ├── app/                # App Router pages
-│   │   └── components/         # React components
+│   │   │   ├── page.tsx        # Home/Dashboard
+│   │   │   ├── profile/        # Profile management page
+│   │   │   └── layout.tsx      # Root layout
+│   │   ├── components/         # React components
+│   │   │   ├── ProfileDropdown.tsx    # Profile avatar dropdown
+│   │   │   ├── SmartContractRoleSelection.tsx
+│   │   │   ├── WalletProvider.tsx
+│   │   │   └── WalletButton.tsx
+│   │   ├── contexts/           # React contexts
+│   │   ├── hooks/              # Custom hooks (useUserProfile, useProgram)
+│   │   ├── lib/                # Utility libraries
+│   │   └── types/              # TypeScript types
 │   ├── package.json
 │   └── next.config.ts
 ├── tests/                       # Smart contract tests
 ├── migrations/                  # Deployment scripts
+├── index_users.js              # User indexing utility
+├── check_user_profile.js       # Profile verification utility
 ├── Anchor.toml                 # Anchor configuration
 └── package.json               # Workspace dependencies
 ```
@@ -146,9 +167,20 @@ Anyone can now access and test the NFT marketplace! Simply:
 ### Devnet Deployment ✅
 - **Program ID**: `9AvbivndosEuSExjRmdJQz1NswXCvbDzeHVBg4Ls4cDw`
 - **Network**: Solana Devnet
-- **Status**: Active and functional
-- **Marketplace**: Initialized and ready
-- **Frontend**: Deployed on Vercel
+- **Status**: ✅ Active and functional
+- **Marketplace**: ✅ Initialized (2.5% fee, 10% max royalty)
+- **Frontend**: ✅ Deployed on Vercel
+- **Current Users**: 3 registered profiles with active profile editing
+- **Last Activity**: Recently tested profile updates (Sep 19, 2025)
+
+### 📊 Live Marketplace Statistics
+- **Total Users**: 3 on-chain profiles
+- **Role Distribution**:
+  - 🎭 Curators: 2 users (67%)
+  - 🎨 Artists: 1 user (33%)
+  - 👥 Collectors: 0 users
+- **Profile Completion**: Users actively filling profiles (60-80% complete)
+- **Recent Activity**: Profile editing and blockchain updates working perfectly
 
 ### Testing the Live Application
 1. **Set up your wallet for devnet**:
@@ -162,15 +194,20 @@ Anyone can now access and test the NFT marketplace! Simply:
    # Or use: https://faucet.solana.com/
    ```
 
-3. **Test user profile creation**:
-   - Connect your wallet at `http://localhost:3000`
+3. **Test the complete profile system**:
+   - Connect your wallet at the live app
    - Select a role (Artist, Collector, or Curator)
-   - Fill in username and bio
-   - Sign the transaction to create your on-chain profile
+   - Create your on-chain profile with username and bio
+   - Click your profile avatar to view the dropdown
+   - Navigate to `/profile` to edit your complete profile
+   - Update all profile fields (website, Twitter, avatar, etc.)
 
-4. **Verify your profile**:
+4. **Monitor your profile**:
    ```bash
-   # Run the verification script
+   # Index all marketplace users
+   node index_users.js
+
+   # Check specific user profile details
    node check_user_profile.js
    ```
 
@@ -251,19 +288,39 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - **UserStats**: Tracks user's NFT activity and reputation
 - **MarketplaceConfig**: Global marketplace settings and configuration
 
-### Frontend Components
+### Frontend Components & Pages
 
 #### Implemented ✅
-- `WalletProvider`: Wallet connection management with SSR support
-- `UserContext`: User state management and role persistence
-- `SmartContractRoleSelection`: Role selection UI with blockchain integration
-- `WalletButton`: Dynamic wallet connection component
+- **Core Components**:
+  - `WalletProvider`: Wallet connection management with SSR support
+  - `UserContext`: User state management and role persistence
+  - `SmartContractRoleSelection`: Role selection UI with blockchain integration
+  - `WalletButton`: Dynamic wallet connection component
+- **Profile Management**:
+  - `ProfileDropdown`: Avatar dropdown with profile preview and quick actions
+  - `ProfilePage` (`/profile`): Complete profile editing interface with real-time blockchain sync
+- **Custom Hooks**:
+  - `useUserProfile`: Blockchain profile operations (create, update, fetch)
+  - `useProgram`: Anchor program connection and management
+
+#### Profile Management Features ✅
+- **Profile Creation**: On-chain profile creation with role selection
+- **Profile Editing**: Full profile editing with all supported fields:
+  - Username (max 32 chars)
+  - Bio (max 200 chars)
+  - Avatar URL (max 200 chars)
+  - Website (max 100 chars)
+  - Twitter handle (max 50 chars)
+  - Role switching (Artist/Collector/Curator)
+- **Profile Completeness**: Visual progress tracking with missing field indicators
+- **Real-time Updates**: Instant blockchain synchronization
+- **Role-based UI**: Dynamic theming based on user role
 
 #### Coming Next
 - `NFTCard`: Display NFT information
 - `ListingForm`: Create new NFT listings
 - `MarketplaceGrid`: Display marketplace items
-- `UserProfile`: User profile display and management
+- `CollectionManager`: NFT collection management tools
 
 ## 🤝 Contributing
 
@@ -281,24 +338,32 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - [x] Basic UI components
 - [x] Smart contract structure
 
-### Phase 2: Core Features ✅
-- [x] Smart contract architecture with user management
+### Phase 2: User Management System ✅
+- [x] Smart contract architecture with comprehensive user management
 - [x] Role-based access system (Artist, Collector, Curator)
-- [x] User profile creation and management on-chain
+- [x] Complete on-chain user profile creation and management
+- [x] Profile editing system with all profile fields
 - [x] Deployed smart contracts on Solana devnet
 - [x] Frontend integration with smart contracts
 - [x] Transaction handling and wallet interaction
-- [ ] NFT listing functionality (Next)
-- [ ] Purchase mechanism (Next)
-- [ ] Marketplace browsing (Next)
+- [x] Profile dropdown with completeness tracking
+- [x] Dedicated profile management page (`/profile`)
+- [x] Real-time blockchain synchronization
+- [x] Profile indexing and monitoring tools
 
-### Phase 3: Advanced Features
+### Phase 3: NFT Trading (Next Priority)
+- [ ] NFT listing functionality
+- [ ] Purchase mechanism
+- [ ] Marketplace browsing interface
+- [ ] Collection management tools
+
+### Phase 4: Advanced Features
 - [ ] Auction system
 - [ ] Offer/bidding mechanism
 - [ ] Royalty distribution
-- [ ] Collection management
+- [ ] Advanced collection management
 
-### Phase 4: Polish & Launch
+### Phase 5: Polish & Launch
 - [ ] Mobile optimization
 - [ ] Performance optimization
 - [ ] Security audit
@@ -319,6 +384,30 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 3. **Frontend Issues**
    - Clear node_modules and reinstall dependencies
    - Check Node.js version compatibility
+
+4. **Profile Issues**
+   - Ensure you're connected to the correct wallet
+   - Check that you have devnet SOL for transactions
+   - Try refreshing the page if profile data doesn't load
+
+## 🛠️ Development Utilities
+
+### User Management Scripts
+```bash
+# Index all users on the marketplace
+node index_users.js
+
+# Check specific user profile details
+node check_user_profile.js
+
+# Initialize marketplace (if needed)
+node init_marketplace.js
+```
+
+### Profile Monitoring
+- **Real-time indexing**: Track all marketplace users and their profile completion
+- **Profile verification**: Verify blockchain data matches expected format
+- **Activity monitoring**: Track profile updates and user activity
 
 ## 📚 Resources
 
