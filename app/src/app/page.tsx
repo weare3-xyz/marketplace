@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useWallet } from '@solana/wallet-adapter-react'
 import WalletButton from '@/components/WalletButton'
+import ProfileDropdown from '@/components/ProfileDropdown'
 import { useUser } from '@/contexts/UserContext'
 import SmartContractRoleSelection from '@/components/SmartContractRoleSelection'
 import { UserRole } from '@/types/user'
@@ -32,7 +33,8 @@ export default function Home() {
                 Weare3
               </h1>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3">
+              {connected && <ProfileDropdown />}
               <WalletButton />
             </div>
           </div>
@@ -127,7 +129,14 @@ export default function Home() {
                 )}
               </div>
 
-              <div className="mt-6 pt-4 border-t">
+              <div className="mt-6 pt-4 border-t flex justify-center space-x-4">
+                <button
+                  onClick={() => window.location.href = '/profile'}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  View Profile
+                </button>
+                <span className="text-gray-300">|</span>
                 <button
                   onClick={() => {
                     if (publicKey) {
