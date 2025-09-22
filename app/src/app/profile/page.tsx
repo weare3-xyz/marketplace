@@ -5,6 +5,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useUserProfile } from '@/hooks/useUserProfile'
 import { UserRole } from '@/types/user'
 import { useRouter } from 'next/navigation'
+import ImageUpload from '@/components/ImageUpload'
 
 interface OnChainProfile {
   walletAddress: string
@@ -382,30 +383,48 @@ export default function ProfilePage() {
                   )}
                 </div>
 
-                {/* Avatar URI */}
+                {/* Avatar */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Avatar URL
+                    Avatar
                   </label>
                   {isEditing ? (
-                    <input
-                      type="url"
-                      value={formData.avatarUri}
-                      onChange={(e) => setFormData({ ...formData, avatarUri: e.target.value })}
-                      placeholder="https://example.com/avatar.jpg"
-                      maxLength={200}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    <ImageUpload
+                      onImageUploaded={(ipfsUrl) => setFormData({ ...formData, avatarUri: ipfsUrl })}
+                      currentImage={formData.avatarUri}
                     />
                   ) : (
-                    <p className="text-gray-900">
+                    <div className="flex items-center space-x-4">
                       {profile?.avatarUri ? (
-                        <a href={profile.avatarUri} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                          {profile.avatarUri}
-                        </a>
+                        <img
+                          src={profile.avatarUri}
+                          alt="Avatar"
+                          className="h-16 w-16 rounded-full object-cover border-2 border-gray-200"
+                        />
                       ) : (
-                        <span className="italic text-gray-400">No avatar URL</span>
+                        <div className="h-16 w-16 bg-gray-200 rounded-full flex items-center justify-center">
+                          <span className="text-gray-400 text-xs">No image</span>
+                        </div>
                       )}
-                    </p>
+                      <div>
+                        <p className="text-sm text-gray-600">
+                          {profile?.avatarUri ? (
+                            profile.avatarUri.includes('ipfs') ? (
+                              <span className="text-green-600">✅ Stored on IPFS</span>
+                            ) : (
+                              <span className="text-blue-600">🔗 External URL</span>
+                            )
+                          ) : (
+                            <span className="italic text-gray-400">No avatar set</span>
+                          )}
+                        </p>
+                        {profile?.avatarUri && (
+                          <p className="text-xs text-gray-500 mt-1 break-all font-mono max-w-xs">
+                            {profile.avatarUri}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
 
