@@ -45,30 +45,37 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const loadUserData = async (walletAddress: string) => {
     try {
-      // First try to load from blockchain
-      const { fetchUserProfile } = await import('@/hooks/useUserProfile')
-      // This is a simplified approach - in a real app you'd use the hook properly
-      // For now, we'll still use localStorage but this sets up the structure
-
+      // Check localStorage first for faster loading
       const savedUserData = localStorage.getItem(`user_${walletAddress}`)
 
       if (savedUserData) {
         const userData = JSON.parse(savedUserData)
-        setUser({
-          ...userData,
-          walletAddress,
-          lastActive: new Date(),
-        })
-      } else {
-        // New user - no role selected yet
-        setUser({
-          walletAddress,
-          createdAt: new Date(),
-          lastActive: new Date(),
-        })
+        // If we have role data in localStorage, set it immediately
+        if (userData.role) {
+          setUser({
+            ...userData,
+            walletAddress,
+            lastActive: new Date(),
+          })
+          setIsLoading(false)
+          return
+        }
       }
+
+      // If no role in localStorage, new user - no role selected yet
+      setUser({
+        walletAddress,
+        createdAt: new Date(),
+        lastActive: new Date(),
+      })
     } catch (error) {
       console.error('Error loading user data:', error)
+      // Even on error, create basic user object
+      setUser({
+        walletAddress,
+        createdAt: new Date(),
+        lastActive: new Date(),
+      })
     } finally {
       setIsLoading(false)
     }
