@@ -9,6 +9,7 @@ A decentralized NFT marketplace built on Solana blockchain using Anchor framewor
 - **Role-Based Access**: Three distinct user roles (Artist, Collector, Curator) with different permissions
 - **Dynamic Role Switching**: Users can change roles seamlessly with blockchain updates
 - **Complete Profile Management**: Full on-chain profile system with editing capabilities
+- **IPFS Image Upload**: Professional-grade image upload to IPFS via Pinata for avatars
 - **Profile Dashboard**: Dedicated profile page with real-time blockchain data
 - **Profile Dropdown**: Quick access profile viewer with completeness tracking
 - **Smart Contract User Profiles**: Comprehensive on-chain user profile system
@@ -34,6 +35,7 @@ A decentralized NFT marketplace built on Solana blockchain using Anchor framewor
 - **TypeScript**: Type-safe JavaScript
 - **Tailwind CSS**: Utility-first CSS framework
 - **@solana/wallet-adapter**: Wallet integration library
+- **Pinata**: IPFS storage for decentralized image hosting
 
 ### Development Tools
 - **Anchor CLI**: Smart contract development
@@ -60,6 +62,7 @@ nft-marketplace/
 │   │   │   └── layout.tsx      # Root layout
 │   │   ├── components/         # React components
 │   │   │   ├── ProfileDropdown.tsx    # Profile avatar dropdown
+│   │   │   ├── ImageUpload.tsx        # IPFS image upload component
 │   │   │   ├── SmartContractRoleSelection.tsx
 │   │   │   ├── WalletProvider.tsx
 │   │   │   └── WalletButton.tsx
@@ -202,7 +205,8 @@ Anyone can now access and test the NFT marketplace! Simply:
    - Create your on-chain profile with username and bio
    - Click your profile avatar to view the dropdown
    - Navigate to `/profile` to edit your complete profile
-   - Update all profile fields (website, Twitter, avatar, etc.)
+   - **Test IPFS image upload**: Drag and drop an image file for your avatar
+   - Update all profile fields (website, Twitter, etc.)
    - Test role changing by clicking "Change Role" button
    - Select a different role and confirm the blockchain update
 
@@ -270,9 +274,42 @@ npm run build
 Create `.env.local` in the `app` directory:
 
 ```env
+# Solana Configuration
 NEXT_PUBLIC_SOLANA_NETWORK=devnet
 NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
+NEXT_PUBLIC_PROGRAM_ID=9AvbivndosEuSExjRmdJQz1NswXCvbDzeHVBg4Ls4cDw
+
+# Pinata IPFS Configuration
+PINATA_JWT=your_pinata_jwt_token_here
+NEXT_PUBLIC_PINATA_GATEWAY=https://gateway.pinata.cloud
 ```
+
+### Setting up Pinata IPFS (for Image Uploads)
+
+1. **Create a Pinata Account**:
+   - Go to [https://pinata.cloud](https://pinata.cloud)
+   - Sign up for a free account (1GB storage + 100GB bandwidth)
+
+2. **Generate API Key**:
+   - Navigate to **API Keys** in your dashboard
+   - Click **"New Key"**
+   - Name it "NFT Marketplace Upload"
+   - Enable **"Pinning Services API"** permissions
+   - Copy the **JWT token** (starts with `eyJ...`)
+
+3. **Configure Environment**:
+   - Replace `your_pinata_jwt_token_here` with your actual JWT token
+   - The gateway URL is already configured for optimal performance
+
+4. **Test the Setup**:
+   ```bash
+   # Start your development server
+   npm run dev
+   
+   # Visit the API endpoint to verify configuration
+   curl http://localhost:3000/api/upload-image
+   # Should return: {"status":"Upload service is running","configured":true}
+   ```
 
 ## 📖 API Reference
 
@@ -305,6 +342,11 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
   - `RoleChangeModal`: Modal interface for seamless role switching
   - `ProfileSyncer`: Automatic blockchain profile synchronization
   - `WalletButton`: Dynamic wallet connection component
+- **IPFS Integration**:
+  - `ImageUpload`: Drag-and-drop image upload to IPFS via Pinata
+  - `/api/upload-image`: Secure server-side upload API with validation
+  - File validation (image types, 5MB limit)
+  - Automatic IPFS URL generation and blockchain integration
 - **Profile Management**:
   - `ProfileDropdown`: Avatar dropdown with profile preview and quick actions
   - `ProfilePage` (`/profile`): Complete profile editing interface with real-time blockchain sync
@@ -322,7 +364,7 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - **Profile Editing**: Full profile editing with all supported fields:
   - Username (max 32 chars)
   - Bio (max 200 chars)
-  - Avatar URL (max 200 chars)
+  - Avatar upload via IPFS (drag-and-drop interface, 5MB limit)
   - Website (max 100 chars)
   - Twitter handle (max 50 chars)
   - Role switching (Artist/Collector/Curator)
@@ -369,6 +411,10 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - [x] Profile data preservation during role changes
 - [x] Automatic profile synchronization between blockchain and frontend
 - [x] Profile indexing and monitoring tools
+- [x] IPFS image upload integration via Pinata
+- [x] Drag-and-drop avatar upload with validation
+- [x] Decentralized image storage on IPFS
+- [x] Professional image upload API with error handling
 
 ### Phase 3: NFT Trading (Next Priority)
 - [ ] NFT listing functionality
@@ -408,6 +454,12 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
    - Ensure you're connected to the correct wallet
    - Check that you have devnet SOL for transactions
    - Try refreshing the page if profile data doesn't load
+
+5. **IPFS Upload Issues**
+   - Verify your Pinata JWT token is correctly configured
+   - Check image file size (must be under 5MB)
+   - Ensure file is a valid image format (PNG, JPG, GIF)
+   - Check browser console for upload errors
 
 ## 🛠️ Development Utilities
 
