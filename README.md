@@ -7,6 +7,7 @@ A decentralized NFT marketplace built on Solana blockchain using Anchor framewor
 ### ✅ **Implemented & Live**
 - **Wallet Integration**: Multi-wallet support (Phantom, Solflare) with seamless connection
 - **Role-Based Access**: Three distinct user roles (Artist, Collector, Curator) with different permissions
+- **Dynamic Role Switching**: Users can change roles seamlessly with blockchain updates
 - **Complete Profile Management**: Full on-chain profile system with editing capabilities
 - **Profile Dashboard**: Dedicated profile page with real-time blockchain data
 - **Profile Dropdown**: Quick access profile viewer with completeness tracking
@@ -170,17 +171,18 @@ Anyone can now access and test the NFT marketplace! Simply:
 - **Status**: ✅ Active and functional
 - **Marketplace**: ✅ Initialized (2.5% fee, 10% max royalty)
 - **Frontend**: ✅ Deployed on Vercel
-- **Current Users**: 3 registered profiles with active profile editing
-- **Last Activity**: Recently tested profile updates (Sep 19, 2025)
+- **Current Users**: 4 registered profiles with active role changing
+- **Last Activity**: Role changes and profile updates working perfectly (Sep 22, 2025)
 
 ### 📊 Live Marketplace Statistics
-- **Total Users**: 3 on-chain profiles
+- **Total Users**: 4 on-chain profiles
 - **Role Distribution**:
-  - 🎭 Curators: 2 users (67%)
-  - 🎨 Artists: 1 user (33%)
-  - 👥 Collectors: 0 users
+  - 🎭 Curators: 2 users (50%)
+  - 🎨 Artists: 1 user (25%)
+  - 👥 Collectors: 1 user (25%)
 - **Profile Completion**: Users actively filling profiles (60-80% complete)
-- **Recent Activity**: Profile editing and blockchain updates working perfectly
+- **Recent Activity**: Multiple role changes tested and working perfectly
+- **Role Changes**: 2 users have successfully changed roles multiple times
 
 ### Testing the Live Application
 1. **Set up your wallet for devnet**:
@@ -201,11 +203,16 @@ Anyone can now access and test the NFT marketplace! Simply:
    - Click your profile avatar to view the dropdown
    - Navigate to `/profile` to edit your complete profile
    - Update all profile fields (website, Twitter, avatar, etc.)
+   - Test role changing by clicking "Change Role" button
+   - Select a different role and confirm the blockchain update
 
-4. **Monitor your profile**:
+4. **Monitor your profile and role changes**:
    ```bash
    # Index all marketplace users
    node index_users.js
+
+   # Check for recent role changes
+   node test_role_change.js
 
    # Check specific user profile details
    node check_user_profile.js
@@ -274,7 +281,7 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 #### User Management (Implemented ✅)
 - `initialize_marketplace()`: Initialize the marketplace configuration
 - `create_user_profile()`: Create a new user profile with role selection
-- `update_user_profile()`: Update existing user profile information
+- `update_user_profile()`: Update existing user profile information and role changes
 
 #### NFT Trading (Coming Next)
 - `list_nft()`: List an NFT for sale
@@ -295,6 +302,8 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
   - `WalletProvider`: Wallet connection management with SSR support
   - `UserContext`: User state management and role persistence
   - `SmartContractRoleSelection`: Role selection UI with blockchain integration
+  - `RoleChangeModal`: Modal interface for seamless role switching
+  - `ProfileSyncer`: Automatic blockchain profile synchronization
   - `WalletButton`: Dynamic wallet connection component
 - **Profile Management**:
   - `ProfileDropdown`: Avatar dropdown with profile preview and quick actions
@@ -305,6 +314,11 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 
 #### Profile Management Features ✅
 - **Profile Creation**: On-chain profile creation with role selection
+- **Dynamic Role Switching**:
+  - Seamless role changes through modal interface
+  - Preserves existing profile data during role changes
+  - Updates blockchain via `updateUserProfile()` smart contract function
+  - Multiple role changes supported per user
 - **Profile Editing**: Full profile editing with all supported fields:
   - Username (max 32 chars)
   - Bio (max 200 chars)
@@ -315,6 +329,7 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - **Profile Completeness**: Visual progress tracking with missing field indicators
 - **Real-time Updates**: Instant blockchain synchronization
 - **Role-based UI**: Dynamic theming based on user role
+- **Automatic Profile Sync**: Background sync between blockchain and frontend state
 
 #### Coming Next
 - `NFTCard`: Display NFT information
@@ -349,6 +364,10 @@ NEXT_PUBLIC_RPC_ENDPOINT=https://api.devnet.solana.com
 - [x] Profile dropdown with completeness tracking
 - [x] Dedicated profile management page (`/profile`)
 - [x] Real-time blockchain synchronization
+- [x] Dynamic role switching with blockchain updates
+- [x] Multiple role changes per user supported
+- [x] Profile data preservation during role changes
+- [x] Automatic profile synchronization between blockchain and frontend
 - [x] Profile indexing and monitoring tools
 
 ### Phase 3: NFT Trading (Next Priority)
