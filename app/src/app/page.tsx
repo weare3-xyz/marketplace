@@ -6,10 +6,12 @@ import WalletButton from '@/components/WalletButton'
 import ProfileDropdown from '@/components/ProfileDropdown'
 import { useUser } from '@/contexts/UserContext'
 import SmartContractRoleSelection from '@/components/SmartContractRoleSelection'
+import RoleChangeModal from '@/components/RoleChangeModal'
 import { UserRole } from '@/types/user'
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
+  const [isRoleChangeModalOpen, setIsRoleChangeModalOpen] = useState(false)
   const wallet = useWallet()
   const { user, hasRole, setUserRole, isLoading } = useUser()
 
@@ -138,12 +140,7 @@ export default function Home() {
                 </button>
                 <span className="text-gray-300">|</span>
                 <button
-                  onClick={() => {
-                    if (publicKey) {
-                      localStorage.removeItem(`user_${publicKey.toString()}`)
-                      window.location.reload()
-                    }
-                  }}
+                  onClick={() => setIsRoleChangeModalOpen(true)}
                   className="text-gray-500 hover:text-gray-700 text-sm"
                 >
                   Change Role
@@ -153,6 +150,15 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      <RoleChangeModal
+        isOpen={isRoleChangeModalOpen}
+        onClose={() => setIsRoleChangeModalOpen(false)}
+        onSuccess={() => {
+          // Refresh the page to update the UI with new role
+          window.location.reload()
+        }}
+      />
     </div>
   )
 }

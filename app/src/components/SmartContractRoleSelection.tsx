@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { UserRole } from '@/types/user'
 import { useUserProfile } from '@/hooks/useUserProfile'
 import { useUser } from '@/contexts/UserContext'
 
 interface SmartContractRoleSelectionProps {
   onSuccess: () => void
+  isRoleChange?: boolean // New prop to indicate if this is a role change
 }
 
 const roleData = {
@@ -48,12 +49,31 @@ const roleData = {
   },
 }
 
-export default function SmartContractRoleSelection({ onSuccess }: SmartContractRoleSelectionProps) {
+export default function SmartContractRoleSelection({ onSuccess, isRoleChange = false }: SmartContractRoleSelectionProps) {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null)
   const [username, setUsername] = useState('')
   const [bio, setBio] = useState('')
-  const { createUserProfile, loading, error } = useUserProfile()
-  const { setUserRole } = useUser()
+  const { createUserProfile, updateUserProfile, fetchUserProfile, loading, error } = useUserProfile()
+  const { setUserRole, user } = useUser()
+
+  // Load existing profile data if this is a role change
+  useEffect(() => {
+    const loadExistingProfile = async () => {
+      if (isRoleChange) {
+        try {
+          const profile = await fetchUserProfile()
+          if (profile) {
+            setUsername(profile.username || '')
+            setBio(profile.bio || '')
+          }
+        } catch (err) {
+          console.error('Error loading existing profile:', err)
+        }
+      }
+    }
+
+    loadExistingProfile()
+  }, [isRoleChange, fetchUserProfile])
 
   const handleRoleSelect = (role: UserRole) => {
     setSelectedRole(role)
@@ -63,11 +83,21 @@ export default function SmartContractRoleSelection({ onSuccess }: SmartContractR
     if (!selectedRole) return
 
     try {
-      await createUserProfile({
-        role: selectedRole,
-        username: username || `${roleData[selectedRole].title}_User`,
-        bio: bio || `New ${roleData[selectedRole].title} on the marketplace`,
-      })
+      if (isRoleChange) {
+        // Update existing profile with new role
+        await updateUserProfile({
+          role: selectedRole,
+          username: username || `${roleData[selectedRole].title}_User`,
+          bio: bio || `Updated ${roleData[selectedRole].title} profile`,
+        })
+      } else {
+        // Create new profile
+        await createUserProfile({
+          role: selectedRole,
+          username: username || `${roleData[selectedRole].title}_User`,
+          bio: bio || `New ${roleData[selectedRole].title} on the marketplace`,
+        })
+      }
 
       // Update local context
       setUserRole(selectedRole)
@@ -75,7 +105,7 @@ export default function SmartContractRoleSelection({ onSuccess }: SmartContractR
       // Call success callback
       onSuccess()
     } catch (err) {
-      console.error('Failed to create profile:', err)
+      console.error('Failed to create/update profile:', err)
     }
   }
 
@@ -84,10 +114,13 @@ export default function SmartContractRoleSelection({ onSuccess }: SmartContractR
       <div className="max-w-2xl mx-auto p-6">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Complete Your {roleData[selectedRole].title} Profile
+            {isRoleChange ? `Change to ${roleData[selectedRole].title}` : `Complete Your ${roleData[selectedRole].title} Profile`}
           </h2>
           <p className="text-gray-600">
-            This will be stored on the Solana blockchain
+            {isRoleChange
+              ? 'Your role will be updated on the Solana blockchain'
+              : 'This will be stored on the Solana blockchain'
+            }
           </p>
         </div>
 
@@ -147,7 +180,7 @@ export default function SmartContractRoleSelection({ onSuccess }: SmartContractR
                     Creating Profile...
                   </>
                 ) : (
-                  'Create Profile on Blockchain'
+                  isRoleChange ? 'Update Role on Blockchain' : 'Create Profile on Blockchain'
                 )}
               </button>
             </div>
@@ -161,10 +194,13 @@ export default function SmartContractRoleSelection({ onSuccess }: SmartContractR
     <div className="max-w-6xl mx-auto p-6">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Choose Your Role
+          {isRoleChange ? 'Change Your Role' : 'Choose Your Role'}
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
-          Select how you'd like to participate in our NFT marketplace. Your profile will be stored on the Solana blockchain.
+          {isRoleChange
+            ? 'Select your new role. This will update your profile on the Solana blockchain.'
+            : 'Select how you\'d like to participate in our NFT marketplace. Your profile will be stored on the Solana blockchain.'
+          }
         </p>
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
           <p className="text-blue-700 text-sm">
